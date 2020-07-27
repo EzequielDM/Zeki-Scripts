@@ -72,16 +72,12 @@ function onFSN(){
 
 function playSound(){
 	if(!getValue("Enable KillVoice")) return;
-	Cheat.PrintChat(" \x02[Zeki] \x01- Parsed playSound()");
 	if(!(Entity.GetEntityFromUserID(Event.GetInt("userid")) == Entity.GetLocalPlayer()) && Entity.GetEntityFromUserID(Event.GetInt("attacker")) == Entity.GetLocalPlayer()){
-		Cheat.PrintChat(" \x02[Zeki] \x01- Parsed Player is The Killer");
 		playing = true; started = Globals.Realtime();
 		if(getValue("Loopback")){
-			Cheat.PrintChat(" \x02[Zeki] \x01- Parsed if(loopback)");
 			Cheat.ExecuteCommand("voice_loopback 1");
 		}
 		var parsedName = "KillVoice " + (getValue("Selected")+1).toString();
-		Cheat.PrintChat(" \x02[Zeki] \x01- Parsed this selectedName \x04" + parsedName + " and " + UI.GetString("Misc", "JAVASCRIPT", "Script items", parsedName));
 		Sound.PlayMicrophone('C:\\Program Files (x86)\\Steam\\steamapps\\common\\Counter-Strike Global Offensive\\' + UI.GetString("Misc", "JAVASCRIPT", "Script items", parsedName));
 	}
 }
