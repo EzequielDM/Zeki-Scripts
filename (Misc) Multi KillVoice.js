@@ -3,18 +3,6 @@ var MDX = require("mdxlib.js");
 var playing = false;
 var started = 0.0;
 
-// Get Value
-function getValue(name){
-	return UI.GetValue("Misc", "JAVASCRIPT", "Script items", name);
-}
-// Set value
-function setValue(name, val){
-	UI.SetValue("Misc", "JAVASCRIPT", "Script items", name, val);
-}
-// Get String
-function getString(name){
-	UI.GetString("Misc", "JAVASCRIPT", "Script items", name);
-}
 // Set Enabled
 function setEnabled(name, val){
 	UI.SetEnabled("Misc", "JAVASCRIPT", "Script items", name, val);
@@ -30,7 +18,8 @@ var file1 = ""; var file2 = ""; var file3 = ""; var file4 = ""; var file5 = "";
 var filenames = [];
 var length = [0, 10];
 var custom_directory = false;
-var directory = "";
+const directory = UI.AddTextbox("Directory");
+setEnabled("Directory", false);
 
 // Draw
 function draw(){
@@ -97,8 +86,6 @@ function draw(){
 			if(MDX.checkbox("Custom directory", sx, sy + 190, custom_directory)){
 				custom_directory = !custom_directory;
 			}
-			if(custom_directory)
-				directory = MDX.textbox("Directory:", sx, sy + 210, directory);
 		}
 
 		if(configtab.getTabVisibility()){
@@ -115,7 +102,6 @@ function draw(){
 					', "filenames":' + files + 
 					', "length":' + JSON.stringify(length) + 
 					', "custom_dir":' + custom_directory +
-					', "directory": "' + directory + '"' +
 				'}';
 				MDX.saveconfig(config);
 				Cheat.Print(config);
@@ -135,7 +121,6 @@ function draw(){
 				length[0] = config.length[0];
 				length[1] = config.length[1];
 				custom_directory = config.custom_dir;
-				directory = config.directory;
 			}
 		}
 
@@ -146,6 +131,12 @@ function draw(){
 			Render.StringCustom(sx + 65, sy + 20, 0, "Landry <3", [255, 0, 0, 150], fonte);
 		}
 		
+	}
+
+	if(custom_directory){
+		setEnabled("Directory", true);
+	} else {
+		setEnabled("Directory", false);
 	}
 }
 
@@ -170,7 +161,7 @@ function playSound(){
 		var parsedName = "KillVoice " + dropdownopts[chosenopt];
 		filenames = [file1, file2, file3, file4, file5];
 		if(!custom_directory) Sound.PlayMicrophone('C:\\Program Files (x86)\\Steam\\steamapps\\common\\Counter-Strike Global Offensive\\' + filenames[chosenopt] + '.wav');
-		else Sound.PlayMicrophone(directory + filenames[chosenopt] + '.wav');
+		else Sound.PlayMicrophone(UI.GetString("Misc", "JAVASCRIPT", "Script items", "Directory") + "\\" + filenames[chosenopt] + '.wav');
 	}
 }
 
