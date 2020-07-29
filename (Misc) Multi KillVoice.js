@@ -154,7 +154,6 @@ function draw(){
 					', "random":' + random +
 				'}';
 				MDX.saveconfig(config);
-				Cheat.Print(config);
 			}
 
 			// Load config button
@@ -217,13 +216,11 @@ function playSound(){
 
 		// Cycle
 		if(cycle[0]){
-			Cheat.Print("parsed cycle \n");
 			Sound.PlayMicrophone(csdir + cycleAudio() + '.wav');
 			return;
 		}
 		// Random
 		if(random){
-			Cheat.Print("parsed random \n");
 			Sound.PlayMicrophone(csdir + randomaudio + '.wav');
 			return;
 		} else
