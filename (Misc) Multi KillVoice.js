@@ -20,6 +20,33 @@ var length = [0, 10];
 var custom_directory = false;
 const directory = UI.AddTextbox("Directory");
 setEnabled("Directory", false);
+var random = false;
+var cycle = [false, 0];
+
+// Get random audio fuction
+function getRandomAudio(){
+	var randint;
+	var filename;
+	for(i=1; i > 0; i++){
+		// Random number between 0 and 4
+		randint = Math.floor( (Math.random() * 5));
+		filename = filenames[randint];
+		if(filename.length > 0) break;
+	}
+	return filename;
+}
+
+// Cycle audio function
+function cycleAudio(){
+	var file = filenames[cycle[1]];
+	if(file && file.length > 0){
+		cycle[1]++;
+		return file;
+	} else {
+		cycle[1] = 1;
+		return filenames[0];
+	}
+}
 
 // Draw
 function draw(){
@@ -49,6 +76,16 @@ function draw(){
 		MDX.tab(configtab);
 		MDX.tab(credits);
 
+		// Version
+		/*
+			Remember to always check if you have the latest version.
+			Current version: 1.3.0
+			Check the latest version at: https://github.com/EzequielDM/Zeki-Scripts/releases
+		*/
+		var fonte = Render.AddFont("Tahoma", 7, 700);
+		Render.StringCustom(sx + 321, sy + 255, 0, "v1.3", [255, 255, 255, 50], fonte);
+
+		// Settings tab
 		if(settings.getTabVisibility()){
 			// Enable checkbox
 			if(MDX.checkbox("Enable", sx, sy, enabled))
@@ -72,9 +109,20 @@ function draw(){
 			// Length slider
 			length = MDX.slider("Length", sx + 80, sy + 40, length[1], 0, 10, true);
 
-
+			// Random Killvoice
+			if(MDX.checkbox("Random", sx + 110, sy, random)){
+				random = !random;
+				cycle[0] = false;
+			}
+			
+			// Cycle killvoice
+			if(MDX.checkbox("Cycle", sx + 110, sy + 20, cycle[0])){
+				cycle[0] = !cycle[0];
+				random = false;
+			}
 		}
 
+		// Files tab
 		if(files.getTabVisibility()){
 			// Files
 			file1 = MDX.textbox("KillVoice 1", sx, sy, file1);
@@ -88,6 +136,7 @@ function draw(){
 			}
 		}
 
+		// Config tab
 		if(configtab.getTabVisibility()){
 			// Save config button
 			if(MDX.button("Save config", sx, sy)){
@@ -101,7 +150,8 @@ function draw(){
 					', "selected":' + chosenopt + 
 					', "filenames":' + files + 
 					', "length":' + JSON.stringify(length) + 
-					', "custom_dir":' + custom_directory +
+					', "custom_dir":' + JSON.stringify(custom_directory) +
+					', "random":' + random +
 				'}';
 				MDX.saveconfig(config);
 				Cheat.Print(config);
@@ -121,11 +171,12 @@ function draw(){
 				length[0] = config.length[0];
 				length[1] = config.length[1];
 				custom_directory = config.custom_dir;
+				random = config.random;
 			}
 		}
 
+		// Credits tab
 		if(credits.getTabVisibility()){
-			var fonte = Render.AddFont("Tahoma", 7, 700);
 			Render.StringCustom(sx, sy, 0, "Developed by: Zeki", [255, 255, 255, 150], fonte);
 			Render.StringCustom(sx, sy + 20, 0, "GUI Library: ", [255, 255, 255, 150], fonte);
 			Render.StringCustom(sx + 65, sy + 20, 0, "Landry <3", [255, 0, 0, 150], fonte);
@@ -133,11 +184,10 @@ function draw(){
 		
 	}
 
-	if(custom_directory){
+	if(custom_directory)
 		setEnabled("Directory", true);
-	} else {
+	else
 		setEnabled("Directory", false);
-	}
 }
 
 // Frame Stage Notify
@@ -158,10 +208,27 @@ function playSound(){
 		if(loopback){
 			Cheat.ExecuteCommand("voice_loopback 1");
 		}
+
+		// Variable definition
 		var parsedName = "KillVoice " + dropdownopts[chosenopt];
 		filenames = [file1, file2, file3, file4, file5];
-		if(!custom_directory) Sound.PlayMicrophone('C:\\Program Files (x86)\\Steam\\steamapps\\common\\Counter-Strike Global Offensive\\' + filenames[chosenopt] + '.wav');
-		else Sound.PlayMicrophone(UI.GetString("Misc", "JAVASCRIPT", "Script items", "Directory") + "\\" + filenames[chosenopt] + '.wav');
+		randomaudio = getRandomAudio(filenames);
+		csdir = (custom_directory) ? UI.GetString("Misc", "JAVASCRIPT", "Script items", "Directory") + "\\" : 'C:\\Program Files (x86)\\Steam\\steamapps\\common\\Counter-Strike Global Offensive\\';
+
+		// Cycle
+		if(cycle[0]){
+			Cheat.Print("parsed cycle \n");
+			Sound.PlayMicrophone(csdir + cycleAudio() + '.wav');
+			return;
+		}
+		// Random
+		if(random){
+			Cheat.Print("parsed random \n");
+			Sound.PlayMicrophone(csdir + randomaudio + '.wav');
+			return;
+		} else
+		// Default
+		Sound.PlayMicrophone(csdir + filenames[chosenopt] + '.wav');
 	}
 }
 
