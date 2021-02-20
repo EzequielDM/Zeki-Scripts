@@ -3,7 +3,7 @@
 ## English
 
 ### What's this piece of garbage?
-All the scripts I make will be inside this repository, why? Maybe some day in the future this will become useful for something.
+All the scripts I make will be inside this repository. Why? Maybe some day in the future this will become useful for something.
 Here you'll find every public script I've made for Onetap, even the simplest ones, so if you want to steal my code, you have another way of
 doing it now :D (Shika I know you're reading this :P)
 
@@ -26,7 +26,7 @@ Not anymore, sorry, as stated above there are many things holding me back from d
 ## Português
 
 ### Que desgraça de repositório é esse?
-Todos os scripts que eu fizer ficarão dentro desse repositório, pra quê? Bom, talvez algum dia no futuro isso venha a se tornar útil
+Todos os scripts que eu fizer ficarão dentro desse repositório. Pra quê? Bom, talvez algum dia no futuro isso venha a se tornar útil
 de alguma forma.
 Aqui você encontrará todo script publico que eu já fiz pro Onetap, até o mais simples, então se você quer roubar meu código, sinta-se a vontade
 agora com essa nova forma de roubar o código (sem meme pro Shika porque ele não fala português)
